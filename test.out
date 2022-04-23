@@ -1,3 +1,5 @@
+the instruction to round in the code is cout.precision, so that's why the same numbers in this results aren't counted as the same number in the frequency results
+
 ~#command -> input
 Enter the number of items -> 30
 Enter all data to be tabulated -> 
