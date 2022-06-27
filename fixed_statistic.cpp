@@ -14,6 +14,10 @@
     ((rand()%(int)(((max) + 1)-(min)))+ (min))      
 //elección aleatoria por recomendación
 
+double** matrix_pointer; 
+int global_cont, global_intervals;
+double *interval_pointer = new double[global_intervals];
+
 using namespace std;
 
 /* Declaración de funciones de ayuda y funcion de arranque */
@@ -39,8 +43,8 @@ double* data_sort(double data[], int limit)
     //
 } // Trying to do this shit in english cuz im too lazy to change the keyboard layout in the console
 
-double** matrix_pointer; 
-int global_cont, global_intervals; //Contador con propositos multiples
+//double** matrix_pointer; 
+//int global_cont, global_intervals; //Contador con propositos multiples
 
 double get_freq(double data[], int nElements)
 {
@@ -108,7 +112,7 @@ double get_freq(double data[], int nElements)
     //
 }
 
-double *interval_pointer = new double[global_intervals];
+//double *interval_pointer = new double[global_intervals];
 
 void get_interval_info(int nElements, double max, double min)
 {
@@ -124,6 +128,8 @@ void get_interval_info(int nElements, double max, double min)
     }else if (type=='S'||type=='s'){
         intervals = sturge_formula(nElements);
         //
+    }else if (type=='I'||type=='i'){
+        cin >> intervals;
     }
 
     cout << "Classes = " << intervals << endl;
@@ -188,42 +194,64 @@ void get_data()
 
     double mark_dt = (got_intervals[1] - got_intervals[0])/2;
 
-    cout.precision(3);
+    //cout.precision(3);
     for (int i=1;i<global_intervals;i+=2){
         cout << got_intervals[i-1] << " - " << got_intervals[i] << " - Class mark = " << got_intervals[i-1] + mark_dt;
         cout << endl;
         //
     }
     
-    //Below this comment lies an attempt to add the frequency into the intervals, by doing
-    //some for(i;i;i) cycles, the number of times that one number repeats itself is added
-    //to one value in the array only if it's within the range of that interval.
-
-    //The thing here was that the final array had trash values, i don't had the time to think
-    //about it, so I'll leave it there until I come back to this code. 
-    /*
+    //finally, its still in fixing, but this now is a minor error in the code
+    //now the only trash is the comments between lines, i need those for later inspection
+    //onto the problem
+    
+    /* for some reasons there are trash values in arrays with a certain size
+    * i wanna cry
+    */
+    
     int aux_freq=0;
     int iF_size = global_intervals/2;
-    int freq_itr[iF_size], fI_pos=0;
+    cout << "iF_size - " << iF_size << endl; // borrar
+    int freq_itr[iF_size], fI_pos=0, auxiliar_pos=0, auxiliar_intervals=0;
 
     for (int i=0;i<iF_size;i++){
+
+        cout << "/////" << (i<iF_size) << "/////" << endl;
+        //cout << "/////" << (freq_matrix[j][0]>=got_intervals[i] && freq_matrix[j][0]<=got_intervals[i+1]) << "//////" << endl;
         aux_freq=0;
-        for (int j=0;(freq_matrix[1][j]>=got_intervals[i] && freq_matrix[1][j]<=got_intervals[i+1]);j++){
+
+        cout << ";;;;;;;;;;;" << got_intervals[auxiliar_intervals] << " - " << got_intervals[auxiliar_intervals+1] << ";;;;;;;;;;" << endl << endl;
+
+        for (int j=auxiliar_pos;(freq_matrix[j][0]>=got_intervals[auxiliar_intervals] && freq_matrix[j][0]<=got_intervals[auxiliar_intervals+1]);j++){
             //
-            aux_freq+=freq_matrix[1][j];
+            cout << ";;;;;;;;;;;" << got_intervals[i] << " - " << got_intervals[i+1] << ";;;;;;;;;;" << endl << endl;
+            cout << "|" << "freq_matrix[0][" << j << "]>=got_intervals[" << auxiliar_intervals << "] equals " << (freq_matrix[j][0]>=got_intervals[auxiliar_intervals]) << "| " << freq_matrix[j][0] << " >= " << got_intervals[auxiliar_intervals] <<endl;
+            cout << "-----------------------------------------------------" << endl;
+            cout << "|" << "freq_matrix[0][" << j << "]<=got_intervals[" << auxiliar_intervals+1 << "] equals " << (freq_matrix[j][0]>=got_intervals[auxiliar_intervals+1]) << "| " << freq_matrix[j][0] << " <= " << got_intervals[auxiliar_intervals+1] <<endl;
+            
+            aux_freq+=freq_matrix[j][1];
             freq_itr[fI_pos]=aux_freq;
+            auxiliar_pos=j;
+            
+            cout << "j = " << j << " | " << "auxiliar_pos = " << auxiliar_pos << " | ";
+            cout << "aux_freq = " << aux_freq << " | ";
+            cout << "freq_itr[" << fI_pos << "] = " << freq_itr[fI_pos] << endl <<endl;
         }
         fI_pos++;
+        cout << "i = " << i << " | fI_pos = " << fI_pos << endl << endl << endl;
+        auxiliar_pos++; auxiliar_intervals+=2;
+        cout << "-------------------------------------------- END OF ITERATION ------------------------------------------" << endl << endl;
     }
 
+
+    //int itv_=0;
     for (int i=0;i<iF_size;i++){
-        cout << "aaaa = " <<  freq_itr[i] << " ";
+        cout <<"interval " << i+1 << " = "<<  freq_itr[i] << endl;
     }
-    */
+    
 
     //
     cout << endl;
-
 }
 
 /* ####################################### */
